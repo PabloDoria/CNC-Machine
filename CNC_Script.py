@@ -19,10 +19,10 @@ class CNCControlApp:
 
         # Definir las posiciones (ajusta las coordenadas según sea necesario)
         self.positions = [
-            (0, 52), (19, 52), (38, 52), (57, 52), (76, 52), (96, 52),
-            (0, 38), (19, 38), (38, 38), (57, 38), (76, 38), (96, 38),
-            (0, 17), (19, 17), (38, 17), (57, 17), (76, 17), (96, 17),
-            (0, 0), (19, 0), (38, 0), (57, 0), (76, 0), (96, 0)
+            (8, 52), (19, 52), (38, 52), (57, 52), (76, 52), (96, 52),
+            (8, 38), (19, 38), (38, 38), (57, 38), (76, 38), (96, 38),
+            (8, 17), (19, 17), (38, 17), (57, 17), (76, 17), (96, 17),
+            (8, 0), (19, 0), (38, 0), (57, 0), (76, 0), (96, 0)
         ]
 
         # Crear botones
@@ -67,8 +67,17 @@ class CNCControlApp:
             time.sleep(2)  # Espera 2 segundos para abrir el extrusor
             self.read_response()
 
+            self.send_gcode_command('G4 P7')
+            time.sleep(2)  # Espera 2 segundos para abrir el extrusor
+            self.read_response()
+
+            # Abrir el extrusor
+            self.send_gcode_command('M3 S0')
+            time.sleep(2)  # Espera 2 segundos para abrir el extrusor
+            self.read_response()
+
             # Volver a la posición inicial
-            self.send_gcode_command('G01 X0 Y0 F3000')
+            self.send_gcode_command('G01 X8 Y0 F3000')
             time.sleep(5)  # Espera 5 segundos para completar el movimiento
             self.read_response()
         except Exception as e:
