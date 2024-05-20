@@ -67,7 +67,7 @@ class CNCControlApp:
             time.sleep(2)  # Espera 2 segundos para abrir el extrusor
             self.read_response()
 
-            self.send_gcode_command('G4 P12')
+            self.send_gcode_command('G4 P10')
             time.sleep(2)  # Espera 2 segundos para abrir el extrusor
             self.read_response()
 
