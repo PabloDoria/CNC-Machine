@@ -67,7 +67,7 @@ class CNCControlApp:
             time.sleep(2)  # Espera 2 segundos para abrir el extrusor
             self.read_response()
 
-            self.send_gcode_command('G4 P7')
+            self.send_gcode_command('G4 P12')
             time.sleep(2)  # Espera 2 segundos para abrir el extrusor
             self.read_response()
 
@@ -86,7 +86,7 @@ class CNCControlApp:
     def stop_machine(self):
         try:
             # Volver a la posición inicial
-            self.send_gcode_command('G01 X0 Y0 F3000')
+            self.send_gcode_command('$H')  # Realizar el homing al iniciar
             time.sleep(5)  # Espera 5 segundos para completar el movimiento
             self.read_response()
 
