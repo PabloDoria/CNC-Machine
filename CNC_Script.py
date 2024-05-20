@@ -13,6 +13,12 @@ class CNCControlApp:
             self.serial_port = serial.Serial('COM3', 115200, timeout=1)
             time.sleep(2)  # Espera 2 segundos para que el puerto se inicialice
             self.send_gcode_command('$H')  # Realizar el homing al iniciar
+            time.sleep(5)  # Espera 5 segundos para completar el movimiento
+            # Volver a la posición inicial
+            self.send_gcode_command('G01 X8 Y0 F6000')
+            time.sleep(5)  # Espera 5 segundos para completar el movimiento
+            self.read_response()
+
         except serial.SerialException as e:
             messagebox.showerror("Error", f"No se pudo abrir el puerto COM3: {e}")
             self.master.destroy()
