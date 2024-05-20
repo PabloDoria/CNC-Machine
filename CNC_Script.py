@@ -58,7 +58,7 @@ class CNCControlApp:
         x, y = position
         try:
             # Mover a la posición especificada
-            self.send_gcode_command(f'G01 X{x} Y{y} F3000')
+            self.send_gcode_command(f'G01 X{x} Y{y} F5000')
             time.sleep(5)  # Espera 5 segundos para completar el movimiento
             self.read_response()
 
@@ -77,7 +77,7 @@ class CNCControlApp:
             self.read_response()
 
             # Volver a la posición inicial
-            self.send_gcode_command('G01 X8 Y0 F3000')
+            self.send_gcode_command('G01 X8 Y0 F5000')
             time.sleep(5)  # Espera 5 segundos para completar el movimiento
             self.read_response()
         except Exception as e:
