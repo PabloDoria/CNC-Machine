@@ -25,10 +25,10 @@ class CNCControlApp:
 
         # Definir las posiciones (ajusta las coordenadas según sea necesario)
         self.positions = [
-            (0, 0), (19, 0), (38, 0), (57, 0), (76, 0), (96, 0),
-            (0, 17.22), (19, 17.22), (38, 17.22), (57, 17.22), (76, 17.22), (96, 17.22),
-            (0, 38), (19, 38), (38, 38), (57, 38), (76, 38), (96, 38),
-            (0, 52), (19, 52), (38, 52), (57, 52), (76, 52), (96, 52)
+            (0, 0), (19, 0), (38, 0), (57, 0), (76, 0), (93, 0),
+            (0, 17.22), (19, 17.22), (38, 17.22), (57, 17.22), (76, 17.22), (93, 17.22),
+            (0, 38), (19, 38), (38, 38), (57, 38), (76, 38), (93, 38),
+            (0, 52), (19, 52), (38, 52), (57, 52), (76, 52), (93, 52)
         ]
 
         # Crear botones
@@ -92,7 +92,7 @@ class CNCControlApp:
     def stop_machine(self):
         try:
             # Volver a la posición inicial
-            self.send_gcode_command('G01 X0 Y0 F5000')
+            self.send_gcode_command('$H')
             time.sleep(5)  # Espera 5 segundos para completar el movimiento
             self.read_response()
 
