@@ -4,7 +4,7 @@ import serial
 import time
 
 class CNCControlApp:
-    def _init_(self, master):
+    def init(self, master):
         self.master = master
         self.master.title("CNC Control")
 
@@ -73,9 +73,16 @@ class CNCControlApp:
             time.sleep(2)  # Espera 2 segundos para abrir el extrusor
             self.read_response()
 
-            self.send_gcode_command('G4 P10')
-            time.sleep(2)  # Espera 2 segundos para abrir el extrusor
-            self.read_response()
+            if x == 0 and y == 0:
+                # Tiempo que el extrusor inyecta agua P = tiempo
+                self.send_gcode_command('G4 P3')
+                time.sleep(2)  # Espera 2 segundos para abrir el extrusor
+                self.read_response()
+            else:
+                # Tiempo que el extrusor inyecta agua P = tiempo
+                self.send_gcode_command('G4 P6')
+                time.sleep(2)  # Espera 2 segundos para abrir el extrusor
+                self.read_response()
 
             # Abrir el extrusor
             self.send_gcode_command('M3 S0')
@@ -108,7 +115,7 @@ class CNCControlApp:
             self.serial_port.close()
         self.master.destroy()
 
-if _name_ == '_main_':
+if name == 'main':
     root = tk.Tk()
     app = CNCControlApp(root)
     root.protocol("WM_DELETE_WINDOW", app.on_closing)
