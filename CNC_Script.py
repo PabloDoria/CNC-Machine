@@ -4,7 +4,7 @@ import serial
 import time
 
 class CNCControlApp:
-    def __init__(self, master):
+    def _init_(self, master):
         self.master = master
         self.master.title("CNC Control")
 
@@ -15,7 +15,7 @@ class CNCControlApp:
             self.send_gcode_command('$H')  # Realizar el homing al iniciar
             time.sleep(5)  # Espera 5 segundos para completar el movimiento
             # Volver a la posición inicial
-            self.send_gcode_command('G01 X8 Y0 F6000')
+            self.send_gcode_command('G01 X0 Y0 F6000')
             time.sleep(5)  # Espera 5 segundos para completar el movimiento
             self.read_response()
 
@@ -25,10 +25,10 @@ class CNCControlApp:
 
         # Definir las posiciones (ajusta las coordenadas según sea necesario)
         self.positions = [
-            (8, 0), (19, 0), (38, 0), (57, 0), (76, 0), (96, 0),
-            (8, 17), (19, 17), (38, 17), (57, 17), (76, 17), (96, 17),
-            (8, 38), (19, 38), (38, 38), (57, 38), (76, 38), (96, 38),
-            (8, 52), (19, 52), (38, 52), (57, 52), (76, 52), (96, 52)
+            (0, 0), (19, 0), (38, 0), (57, 0), (76, 0), (93, 0),
+            (0, 17.22), (19, 17.22), (38, 17.22), (57, 17.22), (76, 17.22), (93, 17.22),
+            (0, 38), (19, 38), (38, 38), (57, 38), (76, 38), (93, 38),
+            (0, 52), (19, 52), (38, 52), (57, 52), (76, 52), (93, 52)
         ]
 
         # Crear botones
@@ -83,7 +83,7 @@ class CNCControlApp:
             self.read_response()
 
             # Volver a la posición inicial
-            self.send_gcode_command('G01 X8 Y0 F5000')
+            self.send_gcode_command('G01 X0 Y0 F5000')
             time.sleep(5)  # Espera 5 segundos para completar el movimiento
             self.read_response()
         except Exception as e:
@@ -92,7 +92,7 @@ class CNCControlApp:
     def stop_machine(self):
         try:
             # Volver a la posición inicial
-            self.send_gcode_command('$H')  # Realizar el homing al iniciar
+            self.send_gcode_command('$H')
             time.sleep(5)  # Espera 5 segundos para completar el movimiento
             self.read_response()
 
@@ -108,7 +108,7 @@ class CNCControlApp:
             self.serial_port.close()
         self.master.destroy()
 
-if __name__ == '__main__':
+if _name_ == '_main_':
     root = tk.Tk()
     app = CNCControlApp(root)
     root.protocol("WM_DELETE_WINDOW", app.on_closing)
