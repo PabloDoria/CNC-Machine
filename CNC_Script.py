@@ -42,6 +42,10 @@ class CNCControlApp:
             btn.grid(row=row, column=col, padx=5, pady=5)
 
         # Botón para detener la máquina
+        self.btn_fill = tk.Button(self.master, text="Llenar todos los tubos", command=self.fill_all(self.positions))
+        self.btn_fill.grid(row=4, column=0, columnspan=6, pady=10)
+
+        # Botón para detener la máquina
         self.btn_stop = tk.Button(self.master, text="Detener Máquina", command=self.stop_machine)
         self.btn_stop.grid(row=4, column=0, columnspan=6, pady=10)
 
@@ -75,7 +79,7 @@ class CNCControlApp:
 
             if x == 0 and y == 0:
                 # Tiempo que el extrusor inyecta agua P = tiempo
-                self.send_gcode_command('G4 P3')
+                self.send_gcode_command('G4 P4.5')
                 time.sleep(2)  # Espera 2 segundos para abrir el extrusor
                 self.read_response()
             else:
@@ -96,6 +100,44 @@ class CNCControlApp:
         except Exception as e:
             print(f"Error al mover a la posición {x}, {y}: {e}")
 
+    def fill_all(self, posiciones):
+        for posicion in posiciones:
+            x, y = posicion
+
+            try:
+                # Mover a la posición especificada
+                self.send_gcode_command(f'G01 X{x} Y{y} F5000')
+                time.sleep(5)  # Espera 5 segundos para completar el movimiento
+                self.read_response()
+
+                # Abrir el extrusor
+                self.send_gcode_command('M3 S1000')
+                time.sleep(2)  # Espera 2 segundos para abrir el extrusor
+                self.read_response()
+
+                if x == 0 and y == 0:
+                    # Tiempo que el extrusor inyecta agua P = tiempo
+                    self.send_gcode_command('G4 P4.5')
+                    time.sleep(2)  # Espera 2 segundos para abrir el extrusor
+                    self.read_response()
+                else:
+                    # Tiempo que el extrusor inyecta agua P = tiempo
+                    self.send_gcode_command('G4 P6')
+                    time.sleep(2)  # Espera 2 segundos para abrir el extrusor
+                    self.read_response()
+
+                # Abrir el extrusor
+                self.send_gcode_command('M3 S0')
+                time.sleep(2)  # Espera 2 segundos para abrir el extrusor
+                self.read_response()
+
+                # Volver a la posición inicial
+                self.send_gcode_command('G01 X0 Y0 F5000')
+                time.sleep(5)  # Espera 5 segundos para completar el movimiento
+                self.read_response()
+            except Exception as e:
+                print(f"Error al mover a la posición {x}, {y}: {e}")
+
     def stop_machine(self):
         try:
             # Volver a la posición inicial
@@ -114,6 +156,7 @@ class CNCControlApp:
         if self.serial_port.is_open:
             self.serial_port.close()
         self.master.destroy()
+
 
 if name == 'main':
     root = tk.Tk()
